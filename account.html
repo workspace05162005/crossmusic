@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crossmusic Free</title>
+    <link rel="shortcut icon" href="crossmusicIcon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/dac92b92d5.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: white;
+        }
+        #nav-bar {
+            width: 100%;
+            height: 70px;
+            background-color: black;
+            opacity: 0.8;
+            position: fixed;
+            z-index: 5;
+        }
+        #top-bar {
+            width: 100%;
+            height: 70px;
+            background-color: black;
+        }
+        #icon-img {
+            margin-top: 0px;
+            margin-left: 50px;
+            width: 170px;
+            height: 70px;
+            float: left;
+        }
+        ::-webkit-search-cancel-button {
+            -webkit-appearance: none;
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+            background-color: rgba(68, 68, 68, 0.5);
+        }
+        ::-webkit-scrollbar-track {
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+          background-color: rgba(121, 121, 121, 0.5);
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:focus {
+            background-color: rgba(170, 169, 169, 0.5);
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        #top {
+            width: 100%;
+        }
+        #account-btn {
+            width: 200px;
+            height: 40px;
+            margin-top: 15px;
+            margin-left: 3%;
+            border-radius: 50px;
+            background-color: #2398f1;
+            color: white;
+            outline: none;
+            border: #419be0;
+            font-size: 15px;
+            float: left;
+            cursor: pointer;
+            transition: .1s;
+        }
+        #account-btn:focus {
+            transform: scale(0.95, 0.95);
+            background-color: #2364f1;
+        }
+        #home-btn {
+            margin-left: 37%;
+        }
+        #search-btn, #home-btn, #library-btn {
+            color: white;
+        }
+        #home-btn, #search-btn, #library-btn {
+            width: 10%;
+            height: 70px;
+            background: black;
+            float: left;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            transition: .1s;
+        }
+        #home-btn:focus, #search-btn:focus, #library-btn:focus {
+            color: #2364f1;
+        }
+        #home-btn:hover, #search-btn:hover, #library-btn:hover {
+            cursor: pointer;
+            background: rgb(45, 45, 45);
+        }
+        #account {
+            width: 40%;
+            height: 550px;
+            border-radius: 20px;
+            border: 1px solid rgb(175, 175, 175);
+            text-align: center;
+            margin-left: 30%;
+            margin-top: 70px;
+        }
+        #input {
+            width: 60%;
+            height: 40px;
+            font-size: 17px;
+            outline: none;
+            border: 1px solid rgb(175, 175, 175);
+            transition: .3s;
+            border-radius: 10px;
+            padding-left: 3%;
+        }
+        #input:focus {
+            width: 80%;
+            border: 2px solid #2364f1;
+        }
+        #btn{
+            width: 23%;
+            height: 40px;
+            font-size: 17px;
+            outline: none;
+            border: 1px solid #2398f1;
+            transition: .3s;
+            border-radius: 10px;
+            background-color: #419be0;
+            color: white;
+            cursor: pointer;
+        }
+        #btn:focus {
+            transform: scale(0.95, 0.95);
+            background-color: #2364f1;
+            border: 1px solid #2364f1;
+        }
+    </style>
+</head>
+<body>
+    <div id="nav-bar">
+        <img src="icon.png" id="icon-img">
+        <button type="button" id="home-btn" onclick="home()"><i class="fas fa-home"></i> ホーム</button>
+        <button type="button" id="search-btn" onclick="search()"><i class="fas fa-search"></i> 検索</button>
+        <button type="button" id="library-btn" onclick="library()"><i class="fas fa-compact-disc"></i> ライブラリ</button>
+        <input type="button" value="アカウント登録" id="account-btn" onclick="account()">
+    </div>
+    <div id="top-bar"></div>
+    <div id="top">
+        <div id="account">
+            <p style="text-align: center;"><img src="images/Crossmusicicon.png" style="width: 50px;height: 50px;"></p>
+            <p style="text-align: center;font-size: 25px;">アカウント作成</p>
+            <p><input type="name" name="" id="input" placeholder="名前"></p>
+            <p><input type="email" name="" id="input" placeholder="メールアドレス"></p>
+            <p><input type="tel" name="" id="input" placeholder="電話番号"></p>
+            <p><input type="password" name="" id="input" placeholder="パスワード"></p>
+            <p><input type="password" name="" id="input" placeholder="パスワード再入力"></p>
+            <p><input type="submit" name="" id="btn" value="次へ" onclick="next()"></p>
+            <p style="color: rgb(150, 150, 150);margin-left: 80%;font-size: 13px;cursor: pointer;">ヘルプ</p>
+        </div>
+    </div>
+    <div id="nav-underBar">
+        <p style="text-align: center;color: white;margin-top: 20px;">音楽が、流れていません。</p>
+    </div>
+
+    <script>
+        function home() {
+            location.href = "home.html";
+        }
+        function search() {
+            location.href = "search.html";
+        }
+        function library() {
+            location.href = "library.html";
+        }
+        function account() {
+            location.href = "account.html";
+        }
+        function next() {
+            location.href = "account_load.html";
+        }
+    </script>
+</body>
+</html>
