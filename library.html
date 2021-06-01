@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crossmusic Free</title>
+    <link rel="shortcut icon" href="crossmusicIcon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/dac92b92d5.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: rgb(50, 50, 50);
+            color: white;
+        }
+        #nav-bar {
+            width: 100%;
+            height: 70px;
+            background-color: black;
+            opacity: 0.8;
+            position: fixed;
+            z-index: 5;
+        }
+        #top-bar {
+            width: 100%;
+            height: 70px;
+            background-color: black;
+        }
+        #nav-underBar {
+            width: 100%;
+            height: 70px;
+            background-color: black;
+            opacity: 0.9;
+            position: fixed;
+            z-index: 5;
+            bottom: 0;
+            left: 0;
+        }
+        #icon-img {
+            margin-top: 0px;
+            margin-left: 50px;
+            width: 170px;
+            height: 70px;
+            float: left;
+        }
+        ::-webkit-search-cancel-button {
+            -webkit-appearance: none;
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+            background-color: rgba(68, 68, 68, 0.5);
+        }
+        ::-webkit-scrollbar-track {
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+          background-color: rgba(121, 121, 121, 0.5);
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:focus {
+            background-color: rgba(170, 169, 169, 0.5);
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        #top {
+            width: 100%;
+        }
+        #account-btn {
+            width: 200px;
+            height: 40px;
+            margin-top: 15px;
+            margin-left: 3%;
+            border-radius: 50px;
+            background-color: #2398f1;
+            color: white;
+            outline: none;
+            border: #419be0;
+            font-size: 15px;
+            float: left;
+            cursor: pointer;
+            transition: .1s;
+        }
+        #account-btn:focus {
+            transform: scale(0.95, 0.95);
+            background-color: #2364f1;
+        }
+        #href-btn {
+            width: 200px;
+            height: 40px;
+            position: absolute;
+            z-index: 2;
+            margin-top: 213px;
+            margin-left: -43%;
+            border-radius: 50px;
+            background-color: #2398f1;
+            color: white;
+            outline: none;
+            border: #419be0;
+            font-size: 18px;
+            float: left;
+            cursor: pointer;
+            transition: .1s;
+            box-shadow: 1px 1px 5px 0.5px rgb(45, 76, 252);
+        }
+        #href-btn:focus {
+            transform: scale(0.95, 0.95);
+            background-color: #2364f1;
+        }
+        #home-btn {
+            margin-left: 37%;
+        }
+        #search-btn, #home-btn {
+            color: white;
+        }
+        #library-btn {
+            color: #2364f1;
+        }
+        #home-btn, #search-btn, #library-btn {
+            width: 10%;
+            height: 70px;
+            background: black;
+            float: left;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            transition: .1s;
+        }
+        #home-btn:focus, #search-btn:focus, #library-btn:focus {
+            color: #2364f1;
+        }
+        #home-btn:hover, #search-btn:hover, #library-btn:hover {
+            cursor: pointer;
+            background: rgb(45, 45, 45);
+        }
+        #new-playlist {
+            width: 220px;
+            height: 220px;
+            background-color: rgb(80, 80, 80);
+            border: white 1px dashed;
+            cursor: pointer;
+            transition: .3s;
+            margin-left: 50px;
+        }
+        #new-playlist:hover {
+            transform: scale(0.95, 0.95);
+        }
+        #made-playlist {
+            width: 220px;
+            height: 220px;
+            background-color: #2364f1;
+            cursor: pointer;
+            transition: .3s;
+            float: left;
+            margin-left: 50px;
+            border: #2364f1 1px solid;
+        }
+        #item-playlist {
+            width: 220px;
+            height: 220px;
+            background-color: rgb(80, 80, 80);
+            cursor: pointer;
+            transition: .3s;
+        }
+        #input {
+            width: 50%;
+            height: 60px;
+            font-size: 40px;
+            outline: none;
+            border: 1px solid rgb(175, 175, 175);
+            transition: 0.5s;
+            margin-top: 30px;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+            background-color: rgb(65, 65, 65);
+            color: rgb(175, 175, 175);
+            text-align: center;
+        }
+        #input:focus {
+            color: white;
+            border: 2px solid #2364f1;
+            width: 80%;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+        }
+        #btn{
+            width: 15%;
+            height: 40px;
+            font-size: 17px;
+            outline: none;
+            border: 1px solid #2398f1;
+            transition: .3s;
+            border-radius: 10px;
+            background-color: #419be0;
+            color: white;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+        #btn:focus {
+            transform: scale(0.95, 0.95);
+            background-color: #2364f1;
+            border: 1px solid #2364f1;
+        }
+    </style>
+</head>
+<body>
+    <div id="nav-bar">
+        <img src="icon.png" id="icon-img">
+        <button type="button" id="home-btn" onclick="home()"><i class="fas fa-home"></i> ホーム</button>
+        <button type="button" id="search-btn" onclick="search()"><i class="fas fa-search"></i> 検索</button>
+        <button type="button" id="library-btn"><i class="fas fa-compact-disc"></i> ライブラリ</button>
+        <input type="button" value="アカウント登録" id="account-btn" onclick="account()">
+    </div>
+    <div id="top-bar"></div>
+    <div id="top">
+        <div id="likes" style="margin-top: 50px;margin-left: 5%;">
+            <h2>高評価された曲</h2>
+            <div id="likes-inner"></div>
+        </div>
+        <p style="text-align: center;margin-top: 400px;margin-bottom: 100px;">プレイリストは公開されません。</p>
+    </div>
+    <div id="playlist" style="margin-top: 100px;margin-left: 5%;">
+        <h2>プレイリスト作成</h2>
+        <div id="new-playlist" onclick="playlist()">
+            <p style="text-align: center;margin-top: 80px;"><i class="fas fa-plus" style="font-size: 45px;"></i></p>
+            <p style="text-align: center;">プレイリストを作成する。</p>
+        </div>
+    </div>
+    <div id="nav-underBar">
+        <p style="text-align: center;color: white;margin-top: 20px;">音楽が、流れていません。</p>
+    </div>
+    <div id="playlistBox" style="position: fixed;top: 150px;left: 20%;background: rgb(65, 65, 65);width: 60%;height: 400px;z-index: 20;display: none;padding-top: 10px;">
+        <i class="fas fa-times" style="margin-left: 97%;color: white;cursor: pointer;" onclick="unPlaylist()"></i>
+        <p style="text-align: center;color: white;margin-top: 10px;">プレイリストを作成</p>
+        <form action="#" method="POST" autocomplete="off">
+                <p style="text-align: center;"><input type="text" id="input" name="title" placeholder="プレイリスト名"></p>
+                <p style="text-align: center;"><button type="submit" id="btn">作成する</button></p>
+        </form>
+    </div>
+    <script>
+        function search() {
+            location.href = "search.html";
+        }
+        function home() {
+            location.href = "home.html";
+        }
+        function account() {
+            location.href = "account.html";
+        }
+        function playlist() {
+            $("#playlistBox").fadeIn("fast");   
+        }
+        function unPlaylist() {
+            $("#playlistBox").fadeOut("fast");   
+        }
+    </script>
+</body>
+</html>
