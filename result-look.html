@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crossmusic Free</title>
+    <link rel="shortcut icon" href="crossmusicIcon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/dac92b92d5.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <style>
+        html {
+            height: 100%;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        #nav-bar {
+            width: 100%;
+            height: 70px;
+            background-color: black;
+            opacity: 0.9;
+            position: fixed;
+            z-index: 5;
+        }
+        #top-bar {
+            width: 100%;
+            height: 70px;
+            background-color: black;
+        }
+        #icon-img {
+            margin-top: 0px;
+            margin-left: 50px;
+            width: 170px;
+            height: 70px;
+            float: left;
+        }
+        ::-webkit-search-cancel-button {
+            -webkit-appearance: none;
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+            background-color: rgba(68, 68, 68, 0.5);
+        }
+        ::-webkit-scrollbar-track {
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+          background-color: rgba(121, 121, 121, 0.5);
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:focus {
+            background-color: rgba(170, 169, 169, 0.5);
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        #top {
+            width: 100%;
+        }
+        #account-btn {
+            width: 200px;
+            height: 40px;
+            margin-top: 15px;
+            margin-left: 3%;
+            border-radius: 50px;
+            background-color: #2398f1;
+            color: white;
+            outline: none;
+            border: #419be0;
+            font-size: 15px;
+            float: left;
+            cursor: pointer;
+            transition: .1s;
+        }
+        #account-btn:focus {
+            transform: scale(0.95, 0.95);
+            background-color: #2364f1;
+        }
+        #home-btn {
+            margin-left: 37%;
+        }
+        #home-btn, #search-btn, #library-btn {
+            color: white;
+        }
+        #home-btn, #search-btn, #library-btn {
+            width: 10%;
+            height: 70px;
+            background: black;
+            float: left;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            transition: .1s;
+        }
+        #home-btn:focus, #search-btn:focus, #library-btn:focus {
+            color: #2364f1;
+        }
+        #home-btn:hover, #search-btn:hover, #library-btn:hover {
+            cursor: pointer;
+            background: rgb(45, 45, 45);
+        }
+        .loader{
+            height: 100px;
+            width: 100%;
+            text-align: center;
+            display: inline-block;
+            vertical-align: top;
+        }
+        svg path,svg rect{
+            fill: rgb(8, 146, 238);
+        }
+        .time {
+            margin: 15px 0;
+            color: rgb(175, 175, 175);
+            font-size: 20px;
+        } 
+        .seek {
+            margin-left: 0%;
+            width: 100%;
+            height: 5px;
+            background: white;
+            border-radius: 50px;
+        }
+        .seek .fill {
+            width: 0;
+            height: 5px;
+            background: #2364f1;
+            border-radius: 50px;
+        }
+        .play-pause {
+            border-radius: 100px;
+            width: 60px;
+            height: 60px;
+            background-color: rgb(105, 105, 105);
+            outline: none;
+            border: none;
+            cursor: pointer;
+            color: white;
+            font-size: 23px;
+            transition: .2s;
+        }
+        
+        .play-pause:focus {
+            transform: scale(0.95, 0.95);
+            background-color: #2364f1;
+            cursor: pointer;
+        }
+        #icon1, #icon3 {
+            font-size: 26px;
+            color: white;
+            cursor: pointer;
+            transition: .4s;
+            margin: 40px;
+        }
+        #icon2, #icon4 {
+            font-size: 26px;
+            color: white;
+            cursor: pointer;
+            transition: .4s;
+            margin: 40px;
+            margin-left: 0px;
+        }
+        #input {
+            width: 60%;
+            height: 40px;
+            font-size: 17px;
+            outline: none;
+            border: 1px solid rgb(175, 175, 175);
+            transition: .3s;
+            border-radius: 10px;
+            padding-left: 3%;
+            margin-top: 10px;
+        }
+        #btn{
+            width: 15%;
+            height: 40px;
+            font-size: 17px;
+            outline: none;
+            border: 1px solid #2398f1;
+            transition: .3s;
+            border-radius: 10px;
+            background-color: #419be0;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        #btn:focus {
+            transform: scale(0.95, 0.95);
+            background-color: #2364f1;
+            border: 1px solid #2364f1;
+        }
+    </style>
+</head>
+<body>
+    <div id="nav-bar">
+        <img src="icon.png" id="icon-img">
+        <button type="button" id="home-btn" onclick="home()"><i class="fas fa-home"></i> ホーム</button>
+        <button type="button" id="search-btn" onclick="search()"><i class="fas fa-search"></i> 検索</button>
+        <button type="button" id="library-btn" onclick="library()"><i class="fas fa-compact-disc"></i> ライブラリ</button>
+        <input type="button" value="アカウント登録" id="account-btn" onclick="account()">
+    </div>
+    <div style="width: 100%;height: 100%;background-color: rgb(40, 40, 40);opacity: 0.5;position: relative;z-index: 3;">
+        <div id="top-bar"></div>
+    </div>
+    <div id="top" style="margin-top: -43%;position: absolute;z-index: 4;width: 90%;margin-left: 5%;">
+    </div>
+    <div id="copyAlertBox" style="position: fixed;top: 600px;left: 2%;background: rgb(65, 65, 65);width: 96%;height: 50px;z-index: 20;display: none;">
+        <p style="color: white;text-align: center;">共有リンクをコピーしました。</p>
+    </div>
+    <div id="copyBox" style="position: fixed;top: 250px;left: 20%;background: rgb(65, 65, 65);width: 60%;height: 250px;z-index: 20;display: none;padding-top: 10px;">
+        <i class="fas fa-times" style="margin-left: 97%;color: white;cursor: pointer;" onclick="unCopy()"></i>
+        <p style="text-align: center;color: white;margin-top: 10px;">共有リンク</p>
+        <p style="text-align: center;"><input type="text" id="input" readonly placeholder="リンクを取得できませんでした。"></p>
+        <p style="text-align: center;"><button type="button" onclick="copyBtn()" id="btn">コピー</button></p>
+    </div>
+    <div id="playlistBox" style="position: fixed;top: 150px;left: 20%;background: rgb(65, 65, 65);width: 60%;height: 550px;z-index: 20;display: none;padding-top: 10px;">
+        <i class="fas fa-times" style="margin-left: 97%;color: white;cursor: pointer;" onclick="unPlaylist()"></i>
+        <p style="text-align: center;color: white;margin-top: 10px;">プレイリストに追加</p>
+    </div>
+    <div id="likeBox" style="position: fixed;top: 250px;left: 20%;background: rgb(65, 65, 65);width: 60%;height: 250px;z-index: 20;display: none;padding-top: 10px;">
+        <i class="fas fa-times" style="margin-left: 97%;color: white;cursor: pointer;" onclick="unLike()"></i>
+        <p style="text-align: center;color: white;margin-top: 10px;">高評価に追加</p>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.1/js/swiper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+    <script>
+        function home() {
+            location.href = "home.html";
+        }
+        function search() {
+            location.href = "search.html";
+        }
+        function library() {
+            location.href = "library.html";
+        }
+        function account() {
+            location.href = "account.html";
+        }
+
+        window.onload = function getInfo(options) {
+            var data = location.href.split("?")[1];
+            var url = data.split("=")[1];
+
+            var view_song = 'https://itunes.apple.com/lookup?id=' + url;
+            var parts = {
+                lang: 'ja_jp',
+                entry: 'music',
+                media: 'music',
+                country: 'JP',
+            };
+        
+            $.ajax({
+                url: view_song,
+                method: 'GET',
+                data: parts,
+                dataType: 'jsonp',
+                        
+                success: function(json) {
+                    viewSong(json);
+                },
+                error:function () {
+                    document.getElementById("top").innerHTML = '<p style="margin-top: 100px;"><div class="loader loader--style1" id="load"><svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"width="50px" height="50px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve"><path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/><path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0C22.32,8.481,24.301,9.057,26.013,10.047z"><animateTransform attributeType="xml"attributeName="transform"type="rotate"from="0 20 20"to="360 20 20"dur="1.5s"repeatCount="indefinite"/></path></svg></div></p>';
+                }
+            });
+        }
+
+        function viewSong(json) {
+            if (json.results.length != 0) {
+                html  = '<div>';
+                      
+                for (var i = 0, len = json.results.length; i < len; i++) {
+                    var result = json.results[i];
+                    var top = document.getElementById("top"); 
+                    var sourceStr = result.artworkUrl100;
+                    var targetStr = "100x100bb.jpg";
+                    var regExp = new RegExp( targetStr, "g" ) ;
+                    var img = sourceStr.replace( regExp , "500x500bb.jpg" );
+                    var backImg = sourceStr.replace( regExp , "1600x1600bb.jpg" );
+                    document.body.style.background = 'url(' + backImg + ')';
+
+                    html += '<div style="margin-left: 0%;margin-top: 40px;width: 400px;height: 400px;"><img src="' + img + '" style="width: 400px;height: 400px;box-shadow: 2px 2px 10px black;" id="img"></div>';
+                    html += '<div style="width: 100%;margin-top: -350px;"><h1 style="color: white;margin-left: 35%;" id="title1">' + result.trackName + '</h1><h2 id="title1" style="color: rgb(175, 175, 175);margin-left: 35%;margin-top: 0px;">' + result.artistName + '</h2></div>';
+                    html += '<div style="text-align: center;margin-top: 300px;"><div class="seek"><div class="fill"></div></div><div class="time">00:00 <span>/</span> 00:00</div><div style="margin-top: -5px;"><p style="text-align: center;"><span id="icon1" type="submit" title="高評価"><i class="far fa-heart" onclick="like()"></i></span><span id="icon2" title="共有"><i class="fas fa-share-alt" onclick="copy()"></i></span><span><button class="play-pause" id="' + result.artistName + '" onclick="play(this.id)"><i class="fa fa-play"></i></button></span><span id="icon3" title="ダウンロード"><i class="fas fa-download" id=' + result.trackViewUrl + ' onclick="download(this.id)"></i></span><span id="icon4" title="プレイリストに追加"><i class="fas fa-ellipsis-h" onclick="playlist()"></i></span></p></div></div>';
+                    html += '<audio src="' + result.previewUrl + '" id="audio" style="display: none;"></audio>';
+                }
+                html += '</div>';
+            }
+            top.innerHTML = html;
+        }
+
+        function playlist() {
+            $("#playlistBox").fadeIn("fast");
+        }
+
+        function unPlaylist() {
+            $("#playlistBox").fadeOut("fast");
+        }
+
+        function like() {
+            $("#likeBox").fadeIn("fast");
+        }
+
+        function unLike() {
+            $("#likeBox").fadeOut("fast");
+        }
+
+        function download(clicked_id) {
+            window.open(clicked_id)
+        }
+
+        function copy() {
+            $("#copyBox").fadeIn("fast");   
+            var data = location.href.split("?")[1];
+            var url = data.split("=")[1];
+            var link = "http://workspace05162005.github.io/crossmusic/result-look.html?data=" + url;
+            document.getElementById("input").value = link;
+        }
+
+        function copyBtn() {
+            let text = document.getElementById('input');
+            text.select();
+            document.execCommand('copy');
+            $("#copyAlertBox").fadeIn("slow"); 
+            setTimeout(copyCountUp, 2000);
+        }
+
+        function copyCountUp() {
+            $("#copyAlertBox").fadeOut("slow");
+        }
+
+        function unCopy() {
+            $("#copyBox").fadeOut("fast");   
+        }
+
+        function play(clicked_id) {
+            const audio = document.getElementById("audio");
+            const playPause  = document.querySelector(".play-pause");
+            let fillbar = document.querySelector(".fill");
+            let currentTime = document.querySelector(".time");
+        
+            if (! audio.paused ) {
+                playPause.innerHTML = '<i class="fas fa-play"></i>';
+                audio.pause();
+            } else {
+                playPause.innerHTML = '<i class="fas fa-pause"></i>';
+                audio.play();
+            }
+            audio.addEventListener("timeupdate", function() {
+                let position = audio.currentTime / audio.duration;
+                fillbar.style.width = position * 100 + "%";
+                convertTime(Math.round(audio.currentTime));
+            });
+        
+            function convertTime(seconds) {
+                let min = Math.floor(seconds / 60);
+                let sec = seconds % 60;
+                min = min < 10 ? "0" + min : min;
+                sec = sec < 10 ? "0" + sec : sec;
+                currentTime.textContent = min + ":" + sec;
+                totalTime(Math.round(audio.duration));
+            }
+              
+            function totalTime(seconds) {
+                let min = Math.floor(seconds / 60);
+                let sec = seconds % 60;
+                min = min < 10 ? "0" + min : min;
+                sec = sec < 10 ? "0" + sec : sec;
+                currentTime.textContent += " / " + min + ":" + sec;
+            }
+        
+            audio.addEventListener("ended", ()=>{
+                next_audio(clicked_id);
+            });
+        }        
+
+        function next_audio(clicked_id) {
+            searchWord({term: clicked_id,limit: 15});
+        }
+
+        var searchWord = function getInfo(options) {
+            var params = {
+                lang: 'ja_jp',
+                entry: 'music',
+                media: 'music',
+                country: 'JP',
+            };
+                
+            if (options && options.term) {
+                params.term = options.term;
+            }
+                
+            if (options && options.limit) {
+                params.limit = options.limit;
+            }
+                  
+            $.ajax({
+                url: 'https://itunes.apple.com/search',
+                method: 'GET',
+                data: params,
+                dataType: 'jsonp',
+                    
+                success: function(json) {
+                    showResult(json);
+                },
+            });
+        };
+
+        function showResult(json) {
+            if (json.results.length != 0) {     
+                var random = Math.floor(Math.random()*15);
+                    if (random == 0) msg = "1";
+	                if (random == 1) msg = "2";
+	                if (random == 2) msg = "3";
+	                if (random == 3) msg = "4";
+	                if (random == 4) msg = "5";
+                    if (random == 5) msg = "6";
+                    if (random == 6) msg = "7";
+                    if (random == 7) msg = "8";
+                    if (random == 8) msg = "9";
+                    if (random == 9) msg = "10";
+                    if (random == 10) msg = "11";
+	                if (random == 11) msg = "12";
+	                if (random == 12) msg = "13";
+	                if (random == 13) msg = "14";
+	                if (random == 14) msg = "15";
+        
+                var resultWord = json.results[msg];              
+                location.href = "result-look.html?data="+encodeURIComponent(resultWord.trackId);
+            }
+        }
+    </script>
+</body>
+</html>
