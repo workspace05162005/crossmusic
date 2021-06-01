@@ -1,0 +1,368 @@
+<?php
+    include 'dbh.php';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crossmusic Free</title>
+    <link rel="shortcut icon" href="crossmusicIcon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/dac92b92d5.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: rgb(50, 50, 50);
+            color: white;
+        }
+        #nav-bar {
+            width: 100%;
+            height: 70px;
+            background-color: black;
+            opacity: 0.9;
+            position: fixed;
+            z-index: 5;
+        }
+        #nav-underBar {
+            width: 100%;
+            height: 70px;
+            background-color: black;
+            opacity: 0.9;
+            position: fixed;
+            z-index: 5;
+            bottom: 0;
+            left: 0;
+        }
+        #top-bar {
+            width: 100%;
+            height: 70px;
+            background-color: black;
+        }
+        #icon-img {
+            margin-top: 0px;
+            margin-left: 50px;
+            width: 170px;
+            height: 70px;
+            float: left;
+        }
+        #search-input {
+            width: 50%;
+            height: 50px;
+            margin-top: 50px;
+            margin-left: 25%;
+            outline: none;
+            border: none;
+            font-size: 25px;
+            background-color: rgb(80, 80, 80);
+            color: white;
+            transition: .5s;
+        }
+        #result {
+            margin-top: 60px;
+            margin-left: 15%;
+            width: 70%;
+        }
+        #result-inner {
+            width: 100%;
+        }
+        #preview-inner {
+            width: 100%;
+        }
+        #search-input:focus {
+            border: 1px solid #419be0;
+            width: 70%;
+            margin-left: 15%;
+        }
+        ::-webkit-search-cancel-button {
+            -webkit-appearance: none;
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+            background-color: rgba(68, 68, 68, 0.5);
+        }
+        ::-webkit-scrollbar-track {
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+          background-color: rgba(121, 121, 121, 0.5);
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:focus {
+            background-color: rgba(170, 169, 169, 0.5);
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        #top {
+            width: 100%;
+        }
+        #account-btn {
+            width: 200px;
+            height: 40px;
+            margin-top: 15px;
+            margin-left: 3%;
+            border-radius: 50px;
+            background-color: #2398f1;
+            color: white;
+            outline: none;
+            border: #419be0;
+            font-size: 15px;
+            float: left;
+            cursor: pointer;
+            transition: .1s;
+        }
+        #account-btn:focus {
+            transform: scale(0.95, 0.95);
+            background-color: #2364f1;
+        }
+        #home-btn {
+            margin-left: 37%;
+        }
+        #home-btn, #library-btn {
+            color: white;
+        }
+        #search-btn {
+            color: #2364f1;
+        }
+        #home-btn, #search-btn, #library-btn {
+            width: 10%;
+            height: 70px;
+            background: black;
+            float: left;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            transition: .1s;
+        }
+        #home-btn:focus, #search-btn:focus, #library-btn:focus {
+            color: #2364f1;
+        }
+        #home-btn:hover, #search-btn:hover, #library-btn:hover {
+            cursor: pointer;
+            background: rgb(45, 45, 45);
+        }
+        .loader{
+            height: 100px;
+            width: 100%;
+            text-align: center;
+            display: inline-block;
+            vertical-align: top;
+        }
+        svg path,svg rect{
+            fill: rgb(8, 146, 238);
+        }
+        #j-pop, #pop {
+            width: 35%;
+            height: 250px;
+            background-color: #2364f1;
+            border-radius: 20px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            margin-left: 12%;
+            float: left;
+            transition: .3s;
+        }
+        #artist, #young {
+            width: 35%;
+            height: 250px;
+            background-color: #2364f1;
+            border-radius: 20px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            margin-left: 6%;
+            float: left;
+            transition: .3s;
+        }
+        #pop, #young {
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+        #j-pop:hover, #artist:hover, #pop:hover, #young:hover {
+            transform: scale(0.95, 0.95);
+            opacity: 0.85;
+        }
+    </style>
+</head>
+<body>
+    <div id="nav-bar">
+        <img src="icon.png" id="icon-img">
+        <button type="button" id="home-btn" onclick="home()"><i class="fas fa-home"></i> ホーム</button>
+        <button type="button" id="search-btn"><i class="fas fa-search"></i> 検索</button>
+        <button type="button" id="library-btn" onclick="library()"><i class="fas fa-compact-disc"></i> ライブラリ</button>
+        <input type="button" value="アカウント登録" id="account-btn" onclick="account()">
+    </div>
+    <div id="top-bar"></div>
+    <div id="top">
+        <input type="search" id="search-input" name="search" placeholder="曲を検索...">
+        <div id="result">
+            <h2 id="h2"></h2>
+            <br>
+            <div id="result-inner"></div>
+            <div id="preview-inner">
+                <div id="j-pop" onclick="jPop()">
+                    <img src="https://www.lmaga.jp/wp-content/uploads/2020/07/aimyon-2007.jpg" style="width: 100%;height: 250px;border-radius: 20px;opacity: 1;" alt="">
+                    <div style="margin-top: -250px;">
+                        <h1 style="color: rgb(245, 13, 13);margin-left: 5%;">J-ポップ</h1>
+                    </div>
+                </div>  
+                <div id="artist" onclick="artist()">
+                    <img src="https://files.bts-official.jp/files_fc/img/profile/20201120/BTS_all.jpg" style="width: 100%;height: 250px;border-radius: 20px;" alt="">
+                    <div style="margin-top: -250px;">
+                        <h1 style="color: rgb(14, 250, 53);margin-left: 5%;">アーティスト</h1>
+                    </div>
+                </div>     
+                <div id="pop" onclick="pop()">
+                    <img src="https://images.rollingstonejapan.com/articles/30000/30753/wysiwyg/0af1f8c303ae15efe6bac3b273582ce8.jpg" style="width: 100%;height: 250px;border-radius: 20px;" alt="">
+                    <div style="margin-top: -250px;">
+                        <h1 style="color: white;margin-left: 5%;">洋楽</h1>
+                    </div>
+                </div>
+                <div id="young" onclick="young()">
+                    <img src="https://prtimes.jp/i/11958/456/resize/d11958-456-687912-24.jpg" style="width: 100%;height: 250px;border-radius: 20px;" alt="">
+                    <div style="margin-top: -250px;">
+                        <h1 style="color: #1440ee;margin-left: 5%;">ニューソング</h1>
+                    </div>
+                </div>         
+            </div>
+        </div>
+        <hr style="background-color:rgb(80, 80, 80); width: 70%;margin-left: 15%;border: 0;height: 2px;">
+        <p style="text-align: center;margin-top: 50px;">&copy; Crossmusic</p>
+    </div>
+    <div id="nav-underBar">
+        <p style="text-align: center;color: white;margin-top: 20px;">音楽が、流れていません。</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.1/js/swiper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+    <script>
+        function home() {
+            location.href = "home.html";
+        }
+        function library() {
+            location.href = "library.html";
+        }
+        function account() {
+            location.href = "account.html";
+        }
+        function jPop() {
+            location.href = "j-pop.html";
+        }
+        function artist() {
+            location.href = "search-artist.html";
+        }
+        function pop() {
+            location.href = "pop.html";
+        }
+        function young() {
+            location.href = "young.html";
+        }
+
+        document.onkeypress = enter;
+        function enter(){
+            if( window.event.keyCode == 13 ){
+                var input = document.getElementById('search-input').value;
+                if (input == "アカウント登録") {
+                    location.href = "account.html"
+                }
+                if (input == "ライブラリ") {
+                    location.href = "library.html"
+                }
+                if (input == "検索") {
+                    location.href = "search.html"
+                }
+                if (input == "ホーム") {
+                    location.href = "home.html"
+                }
+                if (input == "Crossmusic") {
+                    var random = Math.floor(Math.random()*7);
+                    if (random == 0) msg = "1444597475";
+	                if (random == 1) msg = "1538275671";
+	                if (random == 2) msg = "1536317386";
+	                if (random == 3) msg = "1223976640";
+	                if (random == 4) msg = "1536263347";
+                    if (random == 5) msg = "1537756842";
+                    if (random == 6) msg = "1156375396";
+                    location.href = "result.html?data="+encodeURIComponent(msg);
+                }
+            }
+        }
+
+        document.getElementById("preview-inner").style.display = "block";
+
+        const input = document.getElementById('search-input');
+        const log = document.getElementById('log');
+
+        input.onkeyup = logKey;
+
+        function logKey(e) {
+            var word = document.getElementById('search-input').value;
+            searchWord({term: word,limit: 14});
+            document.getElementById("h2").innerHTML = '検索候補：' + word;
+            document.getElementById("preview-inner").style.display = "none";
+        }
+
+        var searchWord = function getInfo(options) {
+            var params = {
+                lang: 'ja_jp',
+                entry: 'music',
+                media: 'music',
+                country: 'JP',
+            };
+                
+            if (options && options.term) {
+                params.term = options.term;
+            }
+                
+            if (options && options.limit) {
+                params.limit = options.limit;
+            }
+                  
+            $.ajax({
+                url: 'https://itunes.apple.com/search',
+                method: 'GET',
+                data: params,
+                dataType: 'jsonp',
+                    
+                success: function(json) {
+                    showResult(json);
+                },
+        
+                error:function () {
+                    document.getElementById("result-inner").innerHTML = '<p style="margin-top: 100px;"><div class="loader loader--style1" id="load"><svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"width="50px" height="50px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve"><path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/><path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0C22.32,8.481,24.301,9.057,26.013,10.047z"><animateTransform attributeType="xml"attributeName="transform"type="rotate"from="0 20 20"to="360 20 20"dur="1.5s"repeatCount="indefinite"/></path></svg></div></p>';
+                }
+            });
+        };
+
+        function showResult(json) {
+            if (json.results.length != 0) {
+                var resultInner = document.getElementById("result-inner");
+                html = '<p></p>'
+                        
+                for (var i = 0, len = json.results.length; i < len; i++) {
+                    var resultWord = json.results[i];
+                
+                    html += '<div style="width: 50%;height: 100px;margin-bottom: 10px;float: left;cursor: pointer;" id=' + resultWord.trackId + ' onclick="resultHref(this.id)">';
+                    html += '<img style="width: 100px;height: 100px;" src="' + resultWord.artworkUrl100 + '"><br>';
+                    html += '<div style="margin-left: 110px;margin-top: -100px;"><h3 class="track-title" style="font-weight: 90;">' + resultWord.trackName + '</h3>';
+                    html += '<h3 style="color: rgb(105, 105, 105);margin-top: -15px;font-weight: 90;" class="track-title">' + resultWord.artistName + '</h3>';
+                    html += '</div></div>';
+                }
+            }
+            resultInner.innerHTML = html;
+        }
+
+        function resultHref(clicked_id) {
+            location.href = "result.html?data="+encodeURIComponent(clicked_id);
+        }
+        
+    </script>
+</body>
+</html>
