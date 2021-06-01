@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crossmusic Free</title>
+    <link rel="shortcut icon" href="crossmusicIcon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/dac92b92d5.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: rgb(50, 50, 50);
+            color: white;
+        }
+        #nav-bar {
+            width: 100%;
+            height: 70px;
+            background-color: black;
+            opacity: 0.8;
+            position: fixed;
+            z-index: 5;
+        }
+        #nav-underBar {
+            width: 100%;
+            height: 70px;
+            background-color: black;
+            opacity: 0.9;
+            position: fixed;
+            z-index: 5;
+            bottom: 0;
+            left: 0;
+        }
+        #top-bar {
+            width: 100%;
+            height: 70px;
+            background-color: black;
+        }
+        #icon-img {
+            margin-top: 0px;
+            margin-left: 50px;
+            width: 170px;
+            height: 70px;
+            float: left;
+        }
+        #search-input {
+            width: 47%;
+            height: 40px;
+            margin-top: 15px;
+            margin-left: 80px;
+            float: left;
+            outline: none;
+            border: none;
+            font-size: 20px;
+            background-color: rgb(50, 50, 50);
+            color: white;
+            transition: .5s;
+        }
+        #search-input:focus {
+            border: 1px solid #419be0;
+            width: 60%;
+        }
+        ::-webkit-search-cancel-button {
+            -webkit-appearance: none;
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+            background-color: rgba(68, 68, 68, 0.5);
+        }
+        ::-webkit-scrollbar-track {
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+          background-color: rgba(121, 121, 121, 0.5);
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:focus {
+            background-color: rgba(170, 169, 169, 0.5);
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        #top {
+            width: 100%;
+            height: 350px;
+            background-color: #419be0;
+        }
+        #bottom {
+            width: 90%;
+            margin-left: 5%;
+            height: 1600px;
+        }
+        #top-songs, #new-songs, #top-artists, #past {
+            width: 100%;
+        }
+        #account-btn {
+            width: 200px;
+            height: 40px;
+            margin-top: 15px;
+            margin-left: 3%;
+            border-radius: 50px;
+            background-color: #2398f1;
+            color: white;
+            outline: none;
+            border: #419be0;
+            font-size: 15px;
+            float: left;
+            cursor: pointer;
+            transition: .1s;
+        }
+        #account-btn:focus {
+            transform: scale(0.95, 0.95);
+            background-color: #2364f1;
+        }
+        #href-btn {
+            width: 200px;
+            height: 40px;
+            position: absolute;
+            z-index: 2;
+            margin-top: 213px;
+            margin-left: -43%;
+            border-radius: 50px;
+            background-color: #2398f1;
+            color: white;
+            outline: none;
+            border: #419be0;
+            font-size: 18px;
+            float: left;
+            cursor: pointer;
+            transition: .1s;
+            box-shadow: 1px 1px 5px 0.5px rgb(45, 76, 252);
+        }
+        #href-btn:focus {
+            transform: scale(0.95, 0.95);
+            background-color: #2364f1;
+        }
+        #home-btn {
+            margin-left: 37%;
+            color: #2364f1;
+        }
+        #search-btn, #library-btn {
+            color: white;
+        }
+        #home-btn, #search-btn, #library-btn {
+            width: 10%;
+            height: 70px;
+            background: black;
+            float: left;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            transition: .1s;
+        }
+        #home-btn:focus, #search-btn:focus, #library-btn:focus {
+            color: #2364f1;
+        }
+        #home-btn:hover, #search-btn:hover, #library-btn:hover {
+            cursor: pointer;
+            background: rgb(45, 45, 45);
+        }
+        #items {
+            max-height: 300px;
+            display: flex;
+            overflow-x:auto
+        }
+        .item {
+            margin-left: 40px;
+            transition: .1s;
+            border-radius: 20px;
+            background-color: rgb(50, 50, 50);
+            width: 210px;
+            padding-top: 10px;
+            position: relative;
+            z-index: 1;
+            
+        }
+        .item:hover {
+            background-color: rgb(40, 40, 40);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="nav-bar">
+        <img src="icon.png" id="icon-img">
+        <button type="button" id="home-btn"><i class="fas fa-home"></i> ホーム</button>
+        <button type="button" id="search-btn" onclick="search()"><i class="fas fa-search"></i> 検索</button>
+        <button type="button" id="library-btn" onclick="library()"><i class="fas fa-compact-disc"></i> ライブラリ</button>
+        <input type="button" value="アカウント登録" id="account-btn" onclick="account()">
+    </div>
+    <div id="top-bar"></div>
+    <div id="top">
+        <img src="top.png" style="width: 100%;height: 350px;">
+        <input type="button" value="Premiumへ" id="href-btn" onclick="account()">
+    </div>
+    <div id="bottom">
+        <div id="top-songs">
+            <h2>人気曲</h2>
+            <br>
+            <div id="items">
+                <div class="item" id="1193701392" onclick="view(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 20px;" src="https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/ef/ca/a4/efcaa44a-517a-98e3-2353-5bff15471ed5/source/190x190bb.jpg"><h4 style="margin-top: 5px;margin-left: 10px;">Shape of you</h4><h4 style="margin-top: -20px;color: rgb(105, 105, 105);margin-left: 10px;">-Ed Sheeran</h4></div>
+                <div class="item" id="1492963535" onclick="view(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 20px;" src="https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/96/53/3b/96533b35-ec84-3445-cfb7-bcd914985eb9/source/190x190bb.jpg"><h4 style="margin-top: 5px;margin-left: 10px;">I LOVE...</h4><h4 style="margin-top: -20px;color: rgb(105, 105, 105);margin-left: 10px;">-Official髭男dism</h4></div>
+                <div class="item" id="542625586" onclick="view(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 20px;" src="https://is1-ssl.mzstatic.com/image/thumb/Music/v4/33/5f/6c/335f6cb3-a9f4-fdc4-f8dd-eabd15bb29a3/source/190x190bb.jpg"><h4 style="margin-top: 5px;margin-left: 10px;">What makes beautiful</h4><h4 style="margin-top: -20px;color: rgb(105, 105, 105);margin-left: 10px;">-One Direction</h4></div>
+                <div class="item" id="1542182311" onclick="view(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 20px;" src="https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/43/17/f1/4317f1d4-6ce4-b675-0b1a-7f2edd2bb40b/source/190x190bb.jpg"><h4 style="margin-top: 5px;margin-left: 10px;">アンコール</h4><h4 style="margin-top: -20px;color: rgb(105, 105, 105);margin-left: 10px;">-YOASOBI</h4></div>
+                <div class="item" id="1528831888" onclick="view(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 20px;" src="https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/b5/56/a8/b556a854-a0ca-1803-2e88-3acb622828ae/source/190x190bb.jpg"><h4 style="margin-top: 5px;margin-left: 10px;">Dynamite</h4><h4 style="margin-top: -20px;color: rgb(105, 105, 105);margin-left: 10px;">-BTS</h4></div>
+            </div>
+        </div>
+        <div id="new-songs">
+            <h2>最新曲</h2>
+            <br>
+            <div id="items">
+                <div class="item" id="1558995214" onclick="view(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 20px;" src="https://is3-ssl.mzstatic.com/image/thumb/Music124/v4/3e/3b/35/3e3b35d6-53b7-ef2a-5214-90d2980532e4/source/400x400bb.jpg"><h4 style="margin-top: 5px;margin-left: 10px;">Take a picture</h4><h4 style="margin-top: -20px;color: rgb(105, 105, 105);margin-left: 10px;">-NiziU</h4></div>
+                <div class="item" id="1534620183" onclick="view(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 20px;" src="https://is4-ssl.mzstatic.com/image/thumb/Music124/v4/c9/35/79/c9357974-6198-5f59-0b83-c3f0398aad7a/source/400x400bb.jpg"><h4 style="margin-top: 5px;margin-left: 10px;">ドライフラワー</h4><h4 style="margin-top: -20px;color: rgb(105, 105, 105);margin-left: 10px;">-優里</h4></div>
+                <div class="item" id="1544083979" onclick="view(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 20px;" src="https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/a8/66/29/a86629b4-8a44-fa27-c2fc-0c9204918305/source/400x400bb.jpg"><h4 style="margin-top: 5px;margin-left: 10px;">怪物</h4><h4 style="margin-top: -20px;color: rgb(105, 105, 105);margin-left: 10px;">-YOASOBI</h4></div>
+                <div class="item" id="1528119630" onclick="view(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 20px;" src="https://is5-ssl.mzstatic.com/image/thumb/Music114/v4/5c/52/f5/5c52f5f3-95cc-8963-8a51-cdff59e293d7/source/400x400bb.jpg"><h4 style="margin-top: 5px;margin-left: 10px;">群青</h4><h4 style="margin-top: -20px;color: rgb(105, 105, 105);margin-left: 10px;">-YOASOBI</h4></div>
+                <div class="item" id="1548406507" onclick="view(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 20px;" src="https://is3-ssl.mzstatic.com/image/thumb/Music114/v4/66/40/48/664048e5-4342-7a8d-1323-94550bb86127/source/400x400bb.jpg"><h4 style="margin-top: 5px;margin-left: 10px;">勿忘</h4><h4 style="margin-top: -20px;color: rgb(105, 105, 105);margin-left: 10px;">-Awesome City Club</h4></div>
+            </div>
+        </div>
+        <div id="top-artists">
+            <h2>人気アーティスト</h2>
+            <br>
+            <div id="items">
+                <div class="item" id="エド・シーラン" onclick="viewArtist(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 95px;object-fit: cover;" src="https://cdns-images.dzcdn.net/images/artist/f4daf253b92a1a9646844c5162e2a968/264x264.jpg"><h4 style="margin-top: 5px;margin-left: 10px;">エド・シーラン</h4></div>
+                <div class="item" id="Official髭男dism" onclick="viewArtist(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 95px;object-fit: cover;" src="https://higedan.com/wp-content/themes/higedan_renewal2020_cms/img/artist-photo-20210101.jpeg"><h4 style="margin-top: 5px;margin-left: 10px;">Official髭男dism</h4></div>
+                <div class="item" id="米津玄師" onclick="viewArtist(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 95px;object-fit: cover;" src="https://yt3.ggpht.com/ytc/AAUvwngXfHMHhncMEHLUqimBqc3o9hhMVCtORKOvtLgU7g=s900-c-k-c0x00ffffff-no-rj"><h4 style="margin-top: 5px;margin-left: 10px;">米津玄師</h4></div>
+                <div class="item" id="YOASOBI" onclick="viewArtist(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 95px;object-fit: cover;" src="https://pbs.twimg.com/profile_images/1192953833011339266/EOyF-epb_400x400.jpg"><h4 style="margin-top: 5px;margin-left: 10px;">YOASOBI</h4></div>
+                <div class="item" id="あいみょん" onclick="viewArtist(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 95px;object-fit: cover;" src="https://www.lmaga.jp/wp-content/uploads/2020/07/aimyon-2007.jpg"><h4 style="margin-top: 5px;margin-left: 10px;">あいみょん</h4></div>
+            </div>
+        </div>
+        <div id="past">
+            <h2>最近再生した曲</h2>
+            <br>
+            <div id="items">
+                <div class="item" id="エド・シーラン" onclick="viewArtist(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 95px;object-fit: cover;" src="https://cdns-images.dzcdn.net/images/artist/f4daf253b92a1a9646844c5162e2a968/264x264.jpg"><h4 style="margin-top: 5px;margin-left: 10px;">エド・シーラン</h4></div>
+                <div class="item" id="Official髭男dism" onclick="viewArtist(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 95px;object-fit: cover;" src="https://higedan.com/wp-content/themes/higedan_renewal2020_cms/img/artist-photo-20210101.jpeg"><h4 style="margin-top: 5px;margin-left: 10px;">Official髭男dism</h4></div>
+                <div class="item" id="米津玄師" onclick="viewArtist(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 95px;object-fit: cover;" src="https://yt3.ggpht.com/ytc/AAUvwngXfHMHhncMEHLUqimBqc3o9hhMVCtORKOvtLgU7g=s900-c-k-c0x00ffffff-no-rj"><h4 style="margin-top: 5px;margin-left: 10px;">米津玄師</h4></div>
+                <div class="item" id="YOASOBI" onclick="viewArtist(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 95px;object-fit: cover;" src="https://pbs.twimg.com/profile_images/1192953833011339266/EOyF-epb_400x400.jpg"><h4 style="margin-top: 5px;margin-left: 10px;">YOASOBI</h4></div>
+                <div class="item" id="あいみょん" onclick="viewArtist(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 95px;object-fit: cover;" src="https://www.lmaga.jp/wp-content/uploads/2020/07/aimyon-2007.jpg"><h4 style="margin-top: 5px;margin-left: 10px;">あいみょん</h4></div>
+            </div>
+        </div>
+    </div>
+    <div id="nav-underBar">
+        <p style="text-align: center;color: white;margin-top: 20px;">音楽が、流れていません。</p>
+    </div>
+
+    <script>
+        function search() {
+            location.href = "search.html";
+        }
+        function library() {
+            location.href = "library.html";
+        }
+        function account() {
+            location.href = "account.html";
+        }
+
+        function view(clicked_id) {
+            location.href = "result.html?data="+encodeURIComponent(clicked_id);
+        }
+        function viewArtist(clicked_id) {
+            location.href = "result-look-artist.html?title=" + clicked_id;
+        }
+    </script>
+</body>
+</html>
