@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crossmusic Free</title>
+    <link rel="shortcut icon" href="crossmusicIcon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/dac92b92d5.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: rgb(50, 50, 50);
+            color: white;
+        }
+        #nav-bar {
+            width: 100%;
+            height: 70px;
+            background-color: black;
+            opacity: 0.9;
+            position: fixed;
+            z-index: 5;
+        }
+        #nav-underBar {
+            width: 100%;
+            height: 70px;
+            background-color: black;
+            opacity: 0.9;
+            position: fixed;
+            z-index: 5;
+            bottom: 0;
+            left: 0;
+        }
+        #top-bar {
+            width: 100%;
+            height: 70px;
+            background-color: black;
+        }
+        #icon-img {
+            margin-top: 0px;
+            margin-left: 50px;
+            width: 170px;
+            height: 70px;
+            float: left;
+        }
+        #search-input {
+            width: 50%;
+            height: 50px;
+            margin-top: 50px;
+            margin-left: 25%;
+            outline: none;
+            border: none;
+            font-size: 25px;
+            background-color: rgb(80, 80, 80);
+            color: white;
+            transition: .5s;
+        }
+        #result {
+            margin-top: 60px;
+            margin-left: 15%;
+            width: 70%;
+        }
+        #result-inner {
+            width: 100%;
+        }
+        #search-input:focus {
+            border: 1px solid #419be0;
+            width: 70%;
+            margin-left: 15%;
+        }
+        ::-webkit-search-cancel-button {
+            -webkit-appearance: none;
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+            background-color: rgba(68, 68, 68, 0.5);
+        }
+        ::-webkit-scrollbar-track {
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+          background-color: rgba(121, 121, 121, 0.5);
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:focus {
+            background-color: rgba(170, 169, 169, 0.5);
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        #top {
+            width: 100%;
+        }
+        #account-btn {
+            width: 200px;
+            height: 40px;
+            margin-top: 15px;
+            margin-left: 3%;
+            border-radius: 50px;
+            background-color: #2398f1;
+            color: white;
+            outline: none;
+            border: #419be0;
+            font-size: 15px;
+            float: left;
+            cursor: pointer;
+            transition: .1s;
+        }
+        #account-btn:focus {
+            transform: scale(0.95, 0.95);
+            background-color: #2364f1;
+        }
+        #home-btn {
+            margin-left: 37%;
+        }
+        #home-btn, #search-btn, #library-btn {
+            color: white;
+        }
+        #home-btn, #search-btn, #library-btn {
+            width: 10%;
+            height: 70px;
+            background: black;
+            float: left;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            transition: .1s;
+        }
+        #home-btn:focus, #search-btn:focus, #library-btn:focus {
+            color: #2364f1;
+        }
+        #home-btn:hover, #search-btn:hover, #library-btn:hover {
+            cursor: pointer;
+            background: rgb(45, 45, 45);
+        }
+        .loader{
+            height: 100px;
+            width: 100%;
+            text-align: center;
+            display: inline-block;
+            vertical-align: top;
+        }
+        svg path,svg rect{
+            fill: rgb(8, 146, 238);
+        }
+        .item-btn {
+            border-radius: 100px;
+            width: 50px;
+            height: 50px;
+            background-color: #2398f1;
+            outline: none;
+            border: none;
+            opacity: 0.9;
+            margin-top: 125px;
+            position: absolute;
+            margin-left: -170px;
+            cursor: pointer;
+            color: white;
+            font-size: 21px;
+            transition: .2s;
+        }
+        .item-btn:hover {
+            transform: scale(0.95, 0.95);
+            background-color: #2364f1;
+            cursor: pointer;
+        }
+        .item {
+            margin-left: 50px;
+            transition: .1s;
+            border-radius: 20px;
+            background-color: rgb(50, 50, 50);
+            width: 210px;
+            padding-top: 10px;
+            position: relative;
+            z-index: 1;
+            float: left;
+        }
+        .item:hover {
+            background-color: rgb(40, 40, 40);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="nav-bar">
+        <img src="icon.png" id="icon-img">
+        <button type="button" id="home-btn" onclick="home()"><i class="fas fa-home"></i> ホーム</button>
+        <button type="button" id="search-btn" onclick="search()"><i class="fas fa-search"></i> 検索</button>
+        <button type="button" id="library-btn" onclick="library()"><i class="fas fa-compact-disc"></i> ライブラリ</button>
+        <input type="button" value="アカウント登録" id="account-btn" onclick="account()">
+    </div>
+    <div id="top-bar"></div>
+    <div id="top">
+        <div id="top-song"></div>
+        <div id="preview-song" style="margin-left: 5%;margin-top: 80px;width: 90%;">
+            <h2>関連曲</h2>
+            <div id="preview-song-inner" style="margin-top: 50px;"></div>
+        </div>
+    </div>
+    <div id="nav-underBar">
+        <p style="text-align: center;color: white;margin-top: 20px;">音楽が、流れていません。</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.1/js/swiper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+    <script>
+        function home() {
+            location.href = "home.html";
+        }
+        function search() {
+            location.href = "search.html";
+        }
+        function library() {
+            location.href = "library.html";
+        }
+        function account() {
+            location.href = "account.html";
+        }
+
+        window.onload = function getInfo(options) {
+            var data = location.href.split("?")[1];
+            var url = data.split("=")[1];
+
+            var view_song = 'https://itunes.apple.com/lookup?id=' + url;
+            var parts = {
+                lang: 'ja_jp',
+                entry: 'music',
+                media: 'music',
+                country: 'JP',
+            };
+        
+            $.ajax({
+                url: view_song,
+                method: 'GET',
+                data: parts,
+                dataType: 'jsonp',
+                        
+                success: function(json) {
+                    viewSong(json);
+                },
+                error:function () {
+                    document.getElementById("top-song").innerHTML = '<p style="margin-top: 100px;"><div class="loader loader--style1" id="load"><svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"width="50px" height="50px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve"><path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/><path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0C22.32,8.481,24.301,9.057,26.013,10.047z"><animateTransform attributeType="xml"attributeName="transform"type="rotate"from="0 20 20"to="360 20 20"dur="1.5s"repeatCount="indefinite"/></path></svg></div></p>';
+                }
+            });
+        }
+
+        function viewSong(json) {
+            if (json.results.length != 0) {
+                html  = '<div>';
+                      
+                for (var i = 0, len = json.results.length; i < len; i++) {
+                    var result = json.results[i];
+                    var topSong = document.getElementById("top-song"); 
+                    var sourceStr = result.artworkUrl100;
+                    var targetStr = "100x100bb.jpg";
+                    var regExp = new RegExp( targetStr, "g" ) ;
+                    var img = sourceStr.replace( regExp , "400x400bb.jpg" );
+                    var artist = result.artistName;
+                    searchWord({term: artist,limit: 15});
+                    console.log(result.artistName, result.artworkUrl100, result.trackId, result.trackName);
+
+                    html += '<div style="margin-left: 5%;margin-top: 40px;width: 300px;height: 300px;"><img src="' + img + '" style="width: 300px;height: 300px;box-shadow: 2px 2px 10px black;" id="img"><button class="item-btn" id=' + result.trackId + ' onclick="look(this.id)"><i class="fas fa-play"></i></button></div>';
+                    html += '<div style="width: 100%;margin-top: -280px;"><h1 style="color: white;margin-left: 28%;">' + result.trackName + '</h1><h2 style="color: rgb(105, 105, 105);margin-left: 28%;margin-top: -5px;cursor: pointer;" id="' + result.artistName + '" onclick="artistHref(this.id)">' + result.artistName + '</h2><p style="color: #419be0;margin-left: 28%;margin-top: 50px;">収録アルバム：　' + result.collectionName + '</p><p style="color: #419be0;margin-left: 28%;margin-top: -5px;">価格：　' + result.trackPrice + '円</p><p style="color: #419be0;margin-left: 28%;margin-top: -5px;">曲ID：　' + result.trackId + '</p></div>';
+                }
+                html += '</div>';
+            }
+            topSong.innerHTML = html;
+        }
+
+        function artistHref(clicked_id) {
+            location.href = "result-look-artist.html?title=" + clicked_id;
+        }
+
+        var searchWord = function getInfo(options) {
+            var params = {
+                lang: 'ja_jp',
+                entry: 'music',
+                media: 'music',
+                country: 'JP',
+            };
+                
+            if (options && options.term) {
+                params.term = options.term;
+            }
+                
+            if (options && options.limit) {
+                params.limit = options.limit;
+            }
+                  
+            $.ajax({
+                url: 'https://itunes.apple.com/search',
+                method: 'GET',
+                data: params,
+                dataType: 'jsonp',
+                    
+                success: function(json) {
+                    showResult(json);
+                },
+        
+                error:function () {
+                    document.getElementById("preview-song-inner").innerHTML = '<p style="margin-top: 100px;"><div class="loader loader--style1" id="load"><svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"width="50px" height="50px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve"><path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/><path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0C22.32,8.481,24.301,9.057,26.013,10.047z"><animateTransform attributeType="xml"attributeName="transform"type="rotate"from="0 20 20"to="360 20 20"dur="1.5s"repeatCount="indefinite"/></path></svg></div></p>';
+                }
+            });
+        };
+
+        function showResult(json) {
+            if (json.results.length != 0) {
+                var resultInner = document.getElementById("preview-song-inner");
+                html = '<p></p>';
+                //console.log(json.results)
+                        
+                for (var i = 0, len = json.results.length; i < len; i++) {
+                    var result = json.results[i];
+                    var sourceStr = result.artworkUrl100;
+                    var targetStr = "100x100bb.jpg";
+                    var regExp = new RegExp( targetStr, "g" ) ;
+                    var img = sourceStr.replace( regExp , "700x700bb.jpg" );
+
+                    html += '<div class="item" id=' + result.trackId + ' onclick="resultHref(this.id)"><img style="height: 190px;width: 190px;margin-left: 10px;border-radius: 20px;" src=' + img + '><h4 style="margin-top: 5px;margin-left: 10px;">' + result.trackName + '</h4><h4 style="margin-top: -20px;color: rgb(105, 105, 105);margin-left: 10px;">-' + result.artistName + '</h4></div>';
+                }
+            }
+            resultInner.innerHTML = html;
+        }        
+
+        function resultHref(clicked_id) {
+            location.href = "result.html?data="+encodeURIComponent(clicked_id);
+        }
+
+        function look(clicked_id) {
+            location.href = "result-look.html?data="+encodeURIComponent(clicked_id);
+        }
+    </script>
+</body>
+</html>
